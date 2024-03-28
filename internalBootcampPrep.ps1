@@ -22,6 +22,12 @@ Write-Host "$password"
 
 # Installing required modules
 
+Write-Host "
+
+I'm going to install some modules now, this may take a little while and things may go quiet, don't worry! I'm just downloading and installing.
+"
+
+
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force
 Install-Module Microsoft.Graph -Force
 
