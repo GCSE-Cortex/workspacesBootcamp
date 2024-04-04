@@ -22,22 +22,58 @@ Write-Host "$password"
 
 # Installing required modules
 
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force
+#Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force
 Install-Module Microsoft.Graph -Force
 
 # Lets clean up any old connections that people might have knocking around
 
-Disconnect-MgGraph
+$null = Disconnect-MgGraph
 
-# Now we'll connect to MgGraph, AzureAD and MS Teams
+# Putting in a warning to make it clearer to people that they need to watch for authentication
 
-Connect-MgGraph -Scopes "User.ReadWrite.All,Policy.ReadWrite.ConditionalAccess, Policy.Read.All, Domain.ReadWrite.All" -NoWelcome
+Write-Host "
+IMPORTANT - The next command is going to initiate an authentication flow to connect to the Microsoft
+Graph API in your powershell. This is going to require you to authenticate. 
+
+If you are on a Mac, this will cross launch a browser window where you can authenticate. Make sure you
+authenticate with your Microsoft Tenant user from your bot message! Pay close attention to the prompts
+as you may be presented with a single button to click to authenticate, but that's with your Cisco account
+don't be tempted by the easy path! Choose to enter another account and enter the correct credentials
+
+On Windows another window will pop up that will be an application authentication window. Depending on
+your environment this may pop up in the background. Again DONT BE TEMPTED TO JUST CLICK! :-) Pay close
+attention to the authentication window, if you don't see use another account, then click back, and then 
+click use another account. Then log in with your Microsoft tenant credentials
+
+If you don't do this, your domain validation will fail. You will see a bunch of authentication errors 
+If this happens, don't worry, you can re-run this script and try again."
+$null = Read-Host -Prompt "Press Enter to continue"
+
+# Now we'll connect to MgGraph, AzureAD and MS Teams. New error logic added to handle authentication failure
+
+try {
+    Connect-MgGraph -Scopes "User.ReadWrite.All,Policy.ReadWrite.ConditionalAccess, Policy.Read.All, Domain.ReadWrite.All" -NoWelcome -ErrorAction Stop
+
+} catch {
+    Write-Host "
+    
+    
+    
+Looks like your authentication failed for some reason. Please try again and ensure you're 
+entering the correct credentials. If you've forgotten your password, then visit 
+https://collabtoolbox.cisco.com/tools/sandbox, click on your Microsoft Tenant and Click to reset the admin 
+email. Wait a few minutes, then message the bot again to get your new credentials. If you have previously 
+enabled MFA and have lost the MFA token, then post in your events Lab0 support space for assistance"
+    return
+    exit 1
+}
 
 # disable security defaults to turn off MFA
 
 $params = @{
 	IsEnabled = $false
 }
+
 Update-MgPolicyIdentitySecurityDefaultEnforcementPolicy -BodyParameter $params
 
 # disable strong password requirement on the tenant
