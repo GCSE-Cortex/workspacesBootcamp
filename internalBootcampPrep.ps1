@@ -23,6 +23,11 @@ Write-Host "$password"
 # Installing required modules
 
 #Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned -Force
+Write-Host "
+
+I'm going to install some modules now, this may take a little while and things may go quiet, don't worry! I'm just downloading and installing.
+"
+
 Install-Module Microsoft.Graph -Force
 
 # Lets clean up any old connections that people might have knocking around
@@ -126,7 +131,7 @@ while ($attempts -lt $maxAttempts) {
 We have been unable to automatically detect that your DNS entry has been put in 
 place for domain validation. This is either because you're using a Mac, or it's
 just taking too long. We'll pause the script now. Please validate your DNS is 
-in place and continue this script when you've seen it. To do this open a terminal
+in place and continue this script when you've seen it. To do this open a new terminal
 or command window and enter the following commands
 
 1. Type nslookup, and press enter
@@ -136,7 +141,8 @@ or command window and enter the following commands
 
 Once you see this, you can return and continue this script
                         
-Press the Enter key to continue ***ONLY*** once you've validated the dns is in place..."
+Press the Enter key to continue ***ONLY*** once you have completed the above commands and 
+validated the dns is in place..."
                         $null = Read-Host -Prompt "Press Enter to continue"
         } else {
             Write-Host "Waiting $delaySeconds seconds before trying again..."
