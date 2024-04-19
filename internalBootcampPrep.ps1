@@ -57,7 +57,7 @@ $null = Read-Host -Prompt "Press Enter to continue"
 # Now we'll connect to MgGraph, AzureAD and MS Teams. New error logic added to handle authentication failure
 
 try {
-    Connect-MgGraph -Scopes "User.ReadWrite.All,Policy.ReadWrite.ConditionalAccess, Policy.Read.All, Domain.ReadWrite.All, Application.Read.All, AppRoleAssignment.Read.All, Policy.Read.All, Directory.Read.All" -NoWelcome -ErrorAction Stop
+    Connect-MgGraph -Scopes "User.ReadWrite.All,Policy.ReadWrite.ConditionalAccess, Policy.Read.All, Domain.ReadWrite.All" -NoWelcome -ErrorAction Stop
 
 } catch {
     Write-Host "
