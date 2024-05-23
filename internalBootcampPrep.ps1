@@ -240,13 +240,13 @@ foreach ($record in $records) {
 
 }
 
-$hasWebexApps = $false
-$applications = Get-MgServicePrincipal -All | Where-Object { $_.DisplayName -like "*Webex*" }
+#$hasWebexApps = $false
+#$applications = Get-MgServicePrincipal -All | Where-Object { $_.DisplayName -like "*Webex*" }
 
 # Display and delete the matching enterprise applications
-foreach ($app in $applications) {
-    $hasWebexApps = $true
-}
+#foreach ($app in $applications) {
+#    $hasWebexApps = $true
+#}
 
 
 Write-Host "
